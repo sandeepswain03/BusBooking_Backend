@@ -6,6 +6,7 @@ import { PORT } from "./src/config/config.js";
 import userRoutes from "./src/routes/user.js";
 import busRoutes from "./src/routes/bus.js";
 import ticketRoutes from "./src/routes/ticket.js";
+import { buildAdminJS } from "./src/config/setup.js";
 
 dotenv.config();
 
@@ -29,11 +30,12 @@ app.use("/ticket", ticketRoutes);
 const start = async () => {
   try {
     await connectDB(process.env.MONGO_URI);
+    await buildAdminJS(app);
     app.listen({ port: PORT, host: "0.0.0.0" }, (err, addr) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(`Server started on http://localhost:${PORT}`);
+        console.log(`Server started on http://localhost:${PORT}/admin`);
       }
     });
   } catch (error) {

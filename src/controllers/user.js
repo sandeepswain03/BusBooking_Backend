@@ -20,7 +20,7 @@ const generateTokens = (user) => {
   return { accessToken, refreshToken };
 };
 
-export const loginOrSignUp = async (req, res) => {
+const loginOrSignUp = async (req, res) => {
   const { id_token } = req.body;
 
   try {
