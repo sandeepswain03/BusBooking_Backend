@@ -33,7 +33,7 @@ export const loginOrSignUp = async (req, res) => {
     const { email, sub: google_id, name, picture, email_verified } = payload;
 
     if (!email_verified) {
-      return res.status(401).json({ error: "Email not verified" });
+      return res.status(401).json({ message: "Email not verified" });
     }
 
     let user = await User.findOne({ email });
@@ -60,7 +60,7 @@ export const loginOrSignUp = async (req, res) => {
       isNewUser,
     });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -68,7 +68,7 @@ const refreshToken = async (req, res) => {
   const { refreshToken: reqRefreshToken } = req.body;
 
   if (!reqRefreshToken) {
-    return res.status(401).json({ error: "No refresh token provided" });
+    return res.status(401).json({ message: "No refresh token provided" });
   }
 
   try {
@@ -79,7 +79,7 @@ const refreshToken = async (req, res) => {
 
     const user = await User.findById(decoded.userId);
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const newAccessToken = jwt.sign(
@@ -89,7 +89,9 @@ const refreshToken = async (req, res) => {
     );
     res.status(200).json({ accessToken: newAccessToken });
   } catch (error) {
-    return res.status(403).json({ error: "Invalid or expired refresh token" });
+    return res
+      .status(403)
+      .json({ message: "Invalid or expired refresh token" });
   }
 };
 
