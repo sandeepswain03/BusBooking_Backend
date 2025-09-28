@@ -26,7 +26,7 @@ export const bookTicket = async (req, res) => {
     const { busId, date, seatNumbers } = req.body;
     const userId = req.userId;
 
-    if (!busId || !date || !seatNumbers || seatNumbers.length === 0) {
+    if (!busId || !date || !seatNumbers || seatNumbers?.length === 0) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
@@ -46,13 +46,13 @@ export const bookTicket = async (req, res) => {
       )
     );
 
-    if (unavailableSeats.length > 0) {
+    if (unavailableSeats?.length > 0) {
       return res
         .status(400)
         .json({ error: "Some seats are already booked.", unavailableSeats });
     }
 
-    const totalFare = bus.price * seatNumbers.length;
+    const totalFare = bus.price * seatNumbers?.length;
 
     const newTicket = new Ticket({
       user: userId,
